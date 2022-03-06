@@ -24,6 +24,20 @@ public class HashMap<T, E> {
         return nodeLists.get(hash(key)).get(key).value;
     }
 
+    public void remove(T key) {
+
+        Node preNode = nodeLists.get(hash(key)).head;
+        Node node = preNode.next;
+        while (node != null) {
+            if (key == node.key) {
+                preNode.next = node.next;
+                return;
+            }
+            preNode = node;
+            node = node.next;
+        }
+    }
+
     public void forEach(BiConsumer<T, E> consumer) {
         nodeLists.forEach(list -> {
             for (Node node : list) {
