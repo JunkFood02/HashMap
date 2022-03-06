@@ -1,12 +1,12 @@
 public class Animal {
-    String name;
+    String sound;
 
-    public Animal(String name) {
-        this.name = name;
+    public Animal(String sound) {
+        this.sound = sound;
     }
 
     public void say()
     {
-        System.out.println(name);
+        System.out.println(sound);
     }
 }
