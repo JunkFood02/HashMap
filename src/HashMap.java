@@ -1,10 +1,13 @@
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 
 public class HashMap<T, E> {
     private static final int initialCapacity = 16;
+    int i = 0;
     List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
 
     public HashMap() {
@@ -21,9 +24,12 @@ public class HashMap<T, E> {
         return nodeLists.get(hash(key)).get(key).value;
     }
 
-    public void forEach(BiConsumer<T,E> consumer)
-    {
-
+    public void forEach(BiConsumer<T, E> consumer) {
+        nodeLists.forEach(list -> {
+            for (Node node : list) {
+                consumer.accept(node.key, node.value);
+            }
+        });
     }
 
     private int hash(T key) {
@@ -45,7 +51,7 @@ public class HashMap<T, E> {
         }
     }
 
-    class LinkedList {
+    class LinkedList implements Iterable<Node> {
         Node head = new Node();
         int size = 0;
 
@@ -74,5 +80,28 @@ public class HashMap<T, E> {
                 return currentNode;
             else return null;
         }
+
+        class NodeIterator implements Iterator<Node> {
+            private Node now = head;
+
+            @Override
+            public boolean hasNext() {
+                return now.next != null;
+            }
+
+            @Override
+            public Node next() {
+                if (hasNext())
+                    now = now.next;
+                return now;
+            }
+        }
+
+        @NotNull
+        @Override
+        public Iterator<Node> iterator() {
+            return new NodeIterator();
+        }
+
     }
 }

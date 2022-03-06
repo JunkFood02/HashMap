@@ -1,5 +1,4 @@
 
-
 public class Main {
     public static void main(String[] args) {
         HashMap<String, Animal> stringIntegerMap = new HashMap<>();
@@ -9,8 +8,10 @@ public class Main {
         stringIntegerMap.get("小羊").say();
         stringIntegerMap.put("小羊", new Animal("咩咩咩"));
         stringIntegerMap.get("小羊").say();
+        stringIntegerMap.get("狗狗").say();
+        stringIntegerMap.get("猫猫").say();
         stringIntegerMap.forEach((s, animal) -> {
-            System.out.print(s+"说：");
+            System.out.print(s + "说：");
             animal.say();
         });
     }
