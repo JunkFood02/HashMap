@@ -8,12 +8,19 @@ import java.util.function.BiConsumer;
 public class HashMap<T, E> {
     private static final int initialCapacity = 16;
     int i = 0;
-    List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
+    private final List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
 
     public HashMap() {
         for (int i = 0; i < initialCapacity; i++) {
             nodeLists.add(new LinkedList());
         }
+    }
+
+    public boolean containsKey(T key) {
+        for (Node node : nodeLists.get(hash(key)))
+            if (node.key.equals(key))
+                return true;
+        return false;
     }
 
     public void put(T key, E value) {
@@ -24,18 +31,19 @@ public class HashMap<T, E> {
         return nodeLists.get(hash(key)).get(key).value;
     }
 
-    public void remove(T key) {
+    public E remove(T key) {
 
         Node preNode = nodeLists.get(hash(key)).head;
         Node node = preNode.next;
         while (node != null) {
             if (key == node.key) {
                 preNode.next = node.next;
-                return;
+                return node.value;
             }
             preNode = node;
             node = node.next;
         }
+        return null;
     }
 
     public void forEach(BiConsumer<T, E> consumer) {
