@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 public class HashMap<T, E> {
     private static final int initialCapacity = 16;
@@ -17,6 +19,11 @@ public class HashMap<T, E> {
 
     public E get(T key) {
         return nodeLists.get(hash(key)).get(key).value;
+    }
+
+    public void forEach(BiConsumer<T,E> consumer)
+    {
+
     }
 
     private int hash(T key) {
@@ -67,7 +74,5 @@ public class HashMap<T, E> {
                 return currentNode;
             else return null;
         }
-
-
     }
 }
