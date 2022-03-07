@@ -1,7 +1,7 @@
 package com.hustunique.android;
 
 public class Animal {
-    String sound;
+    private String sound;
 
     public Animal(String sound) {
         this.sound = sound;
