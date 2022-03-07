@@ -6,8 +6,11 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 public class HashMap<T, E> {
-    private static final int initialCapacity = 16;
-    private final List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
+    private static int initialCapacity = 16;
+    private static int ModValue = 16;
+    private static final float defaultCapacity = 0.75;
+    private int sumSize = 0;
+    private List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
 
     public HashMap() {
         for (int i = 0; i < initialCapacity; i++) {
@@ -23,8 +26,11 @@ public class HashMap<T, E> {
     }
 
     public void put(T key, E value) {
+        sumSize++;
         nodeLists.get(hash(key)).insert(new Node(key, value));
+        if ((float)sumSize >= initialCapacity * defaultCapacity) resize(initialCapacity << 1);
     }
+
 
     public E get(T key) {
         return nodeLists.get(hash(key)).get(key).value;
@@ -37,6 +43,7 @@ public class HashMap<T, E> {
         while (node != null) {
             if (key == node.key) {
                 preNode.next = node.next;
+                sumSize--;
                 return node.value;
             }
             preNode = node;
@@ -45,6 +52,23 @@ public class HashMap<T, E> {
         return null;
     }
 
+    private void resize(int newCapacity){
+        List<LinkedList> newLists = new ArrayList<>(newCapacity);
+        
+        nodeLists = newLists;
+    }
+
+    private void tranfer(List<LinkedList> newLists , int newCapacity){
+        ModValue = newCapacity ;
+        nodeLists.forEach(list -> {
+            for (Node node : list) {
+                newLists.get(hash(node.key)).insert(node);
+            }
+        });
+    }
+
+
+    
     public void forEach(BiConsumer<T, E> consumer) {
         nodeLists.forEach(list -> {
             for (Node node : list) {
@@ -54,7 +78,7 @@ public class HashMap<T, E> {
     }
 
     private int hash(T key) {
-        return key.hashCode() % initialCapacity;
+        return (key.hashCode() ^ (key.hashCode() >> 4)) & (ModValue - 1);
     }
 
     class Node {
