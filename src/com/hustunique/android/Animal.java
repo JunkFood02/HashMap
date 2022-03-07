@@ -1,3 +1,5 @@
+package com.hustunique.android;
+
 public class Animal {
     String sound;
 

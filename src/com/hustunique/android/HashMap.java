@@ -1,4 +1,4 @@
-import org.jetbrains.annotations.NotNull;
+package com.hustunique.android;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -7,7 +7,6 @@ import java.util.function.BiConsumer;
 
 public class HashMap<T, E> {
     private static final int initialCapacity = 16;
-    int i = 0;
     private final List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
 
     public HashMap() {
@@ -119,7 +118,6 @@ public class HashMap<T, E> {
             }
         }
 
-        @NotNull
         @Override
         public Iterator<Node> iterator() {
             return new NodeIterator();
