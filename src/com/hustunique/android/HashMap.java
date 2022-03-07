@@ -54,11 +54,12 @@ public class HashMap<T, E> {
 
     private void resize(int newCapacity){
         List<LinkedList> newLists = new ArrayList<>(newCapacity);
-        
+        transfer(newLists, newCapacity);
         nodeLists = newLists;
+        initialCapacity = newCapacity;
     }
 
-    private void tranfer(List<LinkedList> newLists , int newCapacity){
+    private void transfer(List<LinkedList> newLists , int newCapacity){
         ModValue = newCapacity ;
         nodeLists.forEach(list -> {
             for (Node node : list) {
@@ -68,7 +69,6 @@ public class HashMap<T, E> {
     }
 
 
-    
     public void forEach(BiConsumer<T, E> consumer) {
         nodeLists.forEach(list -> {
             for (Node node : list) {
