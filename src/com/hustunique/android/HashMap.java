@@ -8,8 +8,8 @@ import java.util.function.BiConsumer;
 public class HashMap<T, E> {
     private static int initialCapacity = 16;
     private static int ModValue = 16;
-    private static final float defaultCapacity = 0.75;
-    private int sumSize = 0;
+    private static final float defaultCapacity = 0.75F;
+    private int arraySize;
     private List<LinkedList> nodeLists = new ArrayList<>(initialCapacity);
 
     public HashMap() {
@@ -25,42 +25,28 @@ public class HashMap<T, E> {
         return false;
     }
 
-    public void put(T key, E value) {
-        sumSize++;
-        nodeLists.get(hash(key)).insert(new Node(key, value));
-        if ((float)sumSize >= initialCapacity * defaultCapacity) resize(initialCapacity << 1);
+    public E put(T key, E value) {
+        return nodeLists.get(hash(key)).insert(new Node(key, value));
     }
 
 
     public E get(T key) {
-        return nodeLists.get(hash(key)).get(key).value;
+        return nodeLists.get(hash(key)).get(key);
     }
 
     public E remove(T key) {
-
-        Node preNode = nodeLists.get(hash(key)).head;
-        Node node = preNode.next;
-        while (node != null) {
-            if (key == node.key) {
-                preNode.next = node.next;
-                sumSize--;
-                return node.value;
-            }
-            preNode = node;
-            node = node.next;
-        }
-        return null;
+        return nodeLists.get(hash(key)).remove(key);
     }
 
-    private void resize(int newCapacity){
+    private void resize(int newCapacity) {
         List<LinkedList> newLists = new ArrayList<>(newCapacity);
         transfer(newLists, newCapacity);
         nodeLists = newLists;
         initialCapacity = newCapacity;
     }
 
-    private void transfer(List<LinkedList> newLists , int newCapacity){
-        ModValue = newCapacity ;
+    private void transfer(List<LinkedList> newLists, int newCapacity) {
+        ModValue = newCapacity;
         nodeLists.forEach(list -> {
             for (Node node : list) {
                 newLists.get(hash(node.key)).insert(node);
@@ -100,30 +86,44 @@ public class HashMap<T, E> {
         Node head = new Node();
         int size = 0;
 
-        public void insert(Node node) {
+        public E insert(Node node) {
             Node currentNode = head;
             while (null != currentNode.next) {
-                if (currentNode.next.key == node.key) {
+                if (currentNode.next.key.equals(node.key)) {
                     node.next = currentNode.next.next;
                     currentNode.next = node;
-                    return;
+                    return node.value;
                 }
                 currentNode = currentNode.next;
             }
             currentNode.next = node;
             size++;
+            return null;
         }
 
-        public Node get(T key) {
+        private E get(T key) {
             Node currentNode = head;
             while (null != currentNode.next) {
                 currentNode = currentNode.next;
-                if (currentNode.key == key)
+                if (currentNode.key.equals(key))
                     break;
             }
-            if (currentNode.key == key)
-                return currentNode;
+            if (currentNode.key.equals(key))
+                return currentNode.value;
             else return null;
+        }
+
+        private E remove(T key) {
+            Node currentNode = head;
+            while (currentNode.next != null) {
+                if (key.equals(currentNode.next.key)) {
+                    Node removedNode = currentNode.next;
+                    currentNode.next = currentNode.next.next;
+                    size--;
+                    return removedNode.value;
+                }
+            }
+            return null;
         }
 
         class NodeIterator implements Iterator<Node> {
