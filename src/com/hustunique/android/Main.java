@@ -6,8 +6,8 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        //HashMap<String, Animal> stringAnimalHashMap = new HashMap<>();
-        java.util.HashMap<String, Animal> stringAnimalHashMap = new java.util.HashMap<>();
+        HashMap<String, Animal> stringAnimalHashMap = new HashMap<>();
+        //java.util.HashMap<String, Animal> stringAnimalHashMap = new java.util.HashMap<>();
         int testLevel = 3;
         if (testLevel >= 1) {
             System.out.println("*** TEST1: put,get ***");

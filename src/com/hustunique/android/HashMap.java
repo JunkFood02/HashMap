@@ -100,9 +100,10 @@ public class HashMap<T, E> {
             Node currentNode = head;
             while (null != currentNode.next) {
                 if (currentNode.next.key.equals(node.key)) {
+                    E oldValue = currentNode.next.value;
                     node.next = currentNode.next.next;
                     currentNode.next = node;
-                    return node.value;
+                    return oldValue;
                 }
                 currentNode = currentNode.next;
             }
