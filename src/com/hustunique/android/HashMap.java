@@ -19,6 +19,7 @@ public class HashMap<T, E> {
     }
 
     public boolean containsKey(T key) {
+        if (key == null) return false;
         for (Node node : nodeLists.get(hash(key)))
             if (node.key.equals(key))
                 return true;
@@ -26,16 +27,25 @@ public class HashMap<T, E> {
     }
 
     public E put(T key, E value) {
-        return nodeLists.get(hash(key)).insert(new Node(key, value));
+        if (key == null) return null;
+        int hashcode = hash(key);
+        if (nodeLists.get(hashcode).size == 0)
+            arraySize++;
+        if (arraySize > defaultCapacity * initialCapacity)
+            resize(initialCapacity * 2);
+        return nodeLists.get(hashcode).insert(new Node(key, value));
     }
 
 
     public E get(T key) {
-        return nodeLists.get(hash(key)).get(key);
+        return null == key ? null : nodeLists.get(hash(key)).get(key);
     }
 
     public E remove(T key) {
-        return nodeLists.get(hash(key)).remove(key);
+        int hashcode = hash(key);
+        if (nodeLists.get(hashcode).size == 1)
+            arraySize--;
+        return nodeLists.get(hashcode).remove(key);
     }
 
     private void resize(int newCapacity) {
@@ -83,7 +93,7 @@ public class HashMap<T, E> {
     }
 
     class LinkedList implements Iterable<Node> {
-        Node head = new Node();
+        private final Node head = new Node();
         int size = 0;
 
         public E insert(Node node) {
