@@ -65,10 +65,10 @@ public class HashMap<T, E> {
     }
 
 
-    public void forEach(BiConsumer<T, E> consumer) {
+    public void forEach(BiConsumer<T, E> action) {
         nodeLists.forEach(list -> {
             for (Node node : list) {
-                consumer.accept(node.key, node.value);
+                action.accept(node.key, node.value);
             }
         });
     }
