@@ -16,9 +16,9 @@ HashMap 类的 **基本框架** 与 **方法签名** 以及 **基本的测试代
 
 - `containsKey(key)` 方法判断表中是否存在以 `key` 为键的键值对。
 
-- `remove(key)` 方法从表中移除 `key` 所对应的 `value`，并返回该值。
+- `remove(key)` 方法从表中移除 `key` 所对应的键值对，并返回该值。
 
-- `forEach(action)` 方法可以使用给定的双参数 lambda 表达式对表中键值对进行遍历操作。
+- `forEach(action)` 方法可以使用给定的双参数 Lambda 表达式对表中键值对进行遍历操作。
 
 - 除**已给定的** `ArrayList` 之外，不得使用其他的 Java 内置数据结构。
 
